@@ -24,11 +24,12 @@ class ViewController: UIViewController {
     @IBOutlet var rokWydaniaTF : UITextField?
     @IBOutlet var liczbaSciezekNaPlycie : UITextField?
     var albums : [Album]?
+    var currentCounter : Int?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        getRecords()
+        self.getRecords()
         // Do any additional setup after loading the view, typically from a nib.
         
     }
@@ -46,6 +47,12 @@ class ViewController: UIViewController {
                 print(albums)
                 do {
                     self.albums = try JSONDecoder().decode([Album].self, from: albums)
+                    if(self.albums!.count != 0) {
+                        DispatchQueue.main.async {
+                            self.currentCounter = 0;
+                            self.setProperties()
+                        }
+                    }
                     print(self.albums![1].album)
                     print(self.albums![1].artist)
                     
@@ -55,6 +62,15 @@ class ViewController: UIViewController {
             }
         }.resume()
     
+    }
+    
+    func setProperties() {
+        var currentAlbum = albums![currentCounter!]
+        wykonawcaTF?.text = currentAlbum.artist
+        tytulTF?.text = currentAlbum.album
+        gatunekMuzycznyTF?.text = currentAlbum.genre
+        liczbaSciezekNaPlycie?.text = String(currentAlbum.tracks)
+        rokWydaniaTF?.text = String(currentAlbum.year)
     }
     
 }
