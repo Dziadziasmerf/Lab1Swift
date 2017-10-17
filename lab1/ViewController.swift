@@ -8,12 +8,20 @@
 
 import UIKit
 
-struct Album : Decodable {
+struct Album {
     let album : String
     let artist : String
     let genre : String
     let tracks : Int
     let year : Int
+    
+    init(dictionary: [String: Any]) {
+        self.album = dictionary["album"] as? String ?? ""
+        self.artist = dictionary["artist"] as? String ?? ""
+        self.genre = dictionary["genre"] as? String ?? ""
+        self.tracks = dictionary["tracks"] as? Int ?? 0
+        self.year = dictionary["year"] as? Int ?? 0
+    }
 }
 
 class ViewController: UIViewController {
@@ -23,6 +31,11 @@ class ViewController: UIViewController {
     @IBOutlet var gatunekMuzycznyTF : UITextField?
     @IBOutlet var rokWydaniaTF : UITextField?
     @IBOutlet var liczbaSciezekNaPlycie : UITextField?
+    @IBOutlet var deleteButton : UIButton?
+    @IBOutlet var saveButton : UIButton?
+    @IBOutlet var prevButton : UIButton?
+    @IBOutlet var nextButton : UIButton?
+    @IBOutlet var recordLabel : UILabel?
     var albums : [Album]?
     var currentCounter : Int?
 
@@ -30,6 +43,8 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         self.getRecords()
+        
+        
         // Do any additional setup after loading the view, typically from a nib.
         
     }
@@ -44,33 +59,47 @@ class ViewController: UIViewController {
         let session = URLSession.shared
         session.dataTask(with: url) {  (albums, response, error) in
             if let albums = albums {
-                print(albums)
-                do {
-                    self.albums = try JSONDecoder().decode([Album].self, from: albums)
-                    if(self.albums!.count != 0) {
-                        DispatchQueue.main.async {
-                            self.currentCounter = 0;
-                            self.setProperties()
-                        }
-                    }
-                    print(self.albums![1].album)
-                    print(self.albums![1].artist)
+                let jsonArray = try! JSONSerialization.jsonObject(with: albums, options: JSONSerialization.ReadingOptions()) as? [Any]
+                self.albums = []
                     
-                } catch let jsonError {
-                        print(jsonError)
+                for json in jsonArray! {
+                    self.albums?.append(Album(dictionary: json as! [String : Any]))
                 }
+                
+                if(self.albums!.count != 0) {
+                    DispatchQueue.main.async {
+                        self.currentCounter = 0;
+                        self.setProperties()
+                    }
+                }
+                    
             }
         }.resume()
     
     }
     
     func setProperties() {
-        var currentAlbum = albums![currentCounter!]
+        let currentAlbum = albums![currentCounter!]
         wykonawcaTF?.text = currentAlbum.artist
         tytulTF?.text = currentAlbum.album
         gatunekMuzycznyTF?.text = currentAlbum.genre
         liczbaSciezekNaPlycie?.text = String(currentAlbum.tracks)
         rokWydaniaTF?.text = String(currentAlbum.year)
+        let albumNumber = self.currentCounter! + 1
+        recordLabel?.text = "Rekord \(albumNumber) z \(self.albums!.count)"
+        if albumNumber == 1 {
+            prevButton?.isEnabled = false
+        } else {
+            prevButton?.isEnabled = true
+        }
+    }
+    
+    
+    @IBAction func nextAlbum() {
+        self.currentCounter? += 1
+        if self.currentCounter! < self.albums!.count {
+            self.setProperties()
+        }
     }
     
 }
