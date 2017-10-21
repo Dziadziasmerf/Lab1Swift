@@ -45,12 +45,14 @@ class ViewController: UIViewController {
     @IBOutlet var prevButton : UIButton?
     @IBOutlet var nextButton : UIButton?
     @IBOutlet var recordLabel : UILabel?
+    @IBOutlet var scrollView : UIScrollView?
     var albums : [Album]?
     var currentCounter : Int?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        scrollView?.contentSize = CGSize(width: 0, height: 270)
         self.getRecords()
         
         
@@ -72,7 +74,8 @@ class ViewController: UIViewController {
                 self.albums = []
                     
                 for json in jsonArray! {
-                    self.albums?.append(Album(dictionary: json as! [String : Any]))
+                    if let dict = json as? [String: Any] { self.albums?.append(Album(dictionary: dict as [String : Any]))
+                    }
                 }
                 
                 if(self.albums!.count != 0) {
