@@ -1,4 +1,4 @@
-//
+    //
 //  ViewController.swift
 //  lab1
 //
@@ -9,11 +9,20 @@
 import UIKit
 
 struct Album {
-    let album : String
-    let artist : String
-    let genre : String
-    let tracks : Int
-    let year : Int
+    var album : String
+    var artist : String
+    var genre : String
+    var tracks : Int
+    var year : Int
+    
+    init(album : String, artist: String, genre: String, tracks: Int, year : Int) {
+        self.album = album
+        self.artist = artist
+        self.genre = genre
+        self.tracks = tracks
+        self.year = year
+    }
+    
     
     init(dictionary: [String: Any]) {
         self.album = dictionary["album"] as? String ?? ""
@@ -79,27 +88,51 @@ class ViewController: UIViewController {
     }
     
     func setProperties() {
-        let currentAlbum = albums![currentCounter!]
+        let currentAlbum = self.currentCounter! < self.albums!.count ? albums![currentCounter!] : Album(album: "", artist: "", genre: "", tracks: 0, year: 0)
         wykonawcaTF?.text = currentAlbum.artist
         tytulTF?.text = currentAlbum.album
         gatunekMuzycznyTF?.text = currentAlbum.genre
-        liczbaSciezekNaPlycie?.text = String(currentAlbum.tracks)
-        rokWydaniaTF?.text = String(currentAlbum.year)
+        liczbaSciezekNaPlycie?.text = currentAlbum.tracks != 0 ? String(currentAlbum.tracks) : ""
+        rokWydaniaTF?.text = currentAlbum.year != 0 ? String(currentAlbum.year) : ""
         let albumNumber = self.currentCounter! + 1
         recordLabel?.text = "Rekord \(albumNumber) z \(self.albums!.count)"
-        if albumNumber == 1 {
-            prevButton?.isEnabled = false
-        } else {
-            prevButton?.isEnabled = true
-        }
+        
+        prevButton?.isEnabled = albumNumber != 1
+        nextButton?.isEnabled = albumNumber <= self.albums!.count
+    
     }
     
     
     @IBAction func nextAlbum() {
         self.currentCounter? += 1
-        if self.currentCounter! < self.albums!.count {
-            self.setProperties()
-        }
+        self.setProperties()
     }
     
+    @IBAction func prevAlbum() {
+        self.currentCounter? -= 1
+        self.setProperties()
+    }
+    
+    @IBAction func removeAlbum() {
+        self.albums?.remove(at: self.currentCounter!)
+        if self.currentCounter! > self.albums!.count {
+            self.currentCounter = (self.albums!.count - 1)
+        }
+        self.setProperties()
+    }
+    
+    @IBAction func saveAlbum() {
+        let currentAlbum = Album(album: (tytulTF?.text)!,artist: (wykonawcaTF?.text)!, genre: (gatunekMuzycznyTF?.text)!, tracks: Int((liczbaSciezekNaPlycie?.text)!)!, year: Int((rokWydaniaTF?.text)!)!)
+        if self.currentCounter! < self.albums!.count {
+            self.albums![currentCounter!] = currentAlbum
+        } else {
+            self.albums?.append(currentAlbum)
+        }
+        setProperties()
+    }
+    
+    @IBAction func newAlbum() {
+        self.currentCounter = self.albums!.count
+        setProperties()
+    }
 }
