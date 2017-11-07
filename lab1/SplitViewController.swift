@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-var albums : [Album]?
+var albums : [Album]? = []
 var currentCounter : Int = 0
 
 struct Album {
@@ -38,9 +38,10 @@ struct Album {
 }
 
 
-class SplitViewController : UISplitViewController {
+class SplitViewController : UISplitViewController, UISplitViewControllerDelegate{
     
     override func viewDidLoad() {
+        self.delegate = self
         self.getRecords()
     }
     
@@ -53,7 +54,7 @@ class SplitViewController : UISplitViewController {
                 albums = []
                 
                 for json in jsonArray! {
-                    if let dict = json as? [String: Any] { albums?.append(Album(dictionary: dict as [String : Any]))
+                    if let dict = json as? [String: Any] { albums!.append(Album(dictionary: dict as [String : Any]))
                     }
                 }
                 /*
@@ -68,5 +69,11 @@ class SplitViewController : UISplitViewController {
             }.resume()
         
     }
+    
+    
+    func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
+        return true
+    }
+    
     
 }

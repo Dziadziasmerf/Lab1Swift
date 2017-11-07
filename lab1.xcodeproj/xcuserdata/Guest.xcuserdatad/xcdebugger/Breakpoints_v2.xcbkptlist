@@ -14,9 +14,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "11"
-            endingLineNumber = "11"
-            landmarkName = "Album"
-            landmarkType = "14">
+            endingLineNumber = "11">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -30,9 +28,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "65"
-            endingLineNumber = "65"
-            landmarkName = "getRecords()"
-            landmarkType = "7">
+            endingLineNumber = "65">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -46,9 +42,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "66"
-            endingLineNumber = "66"
-            landmarkName = "getRecords()"
-            landmarkType = "7">
+            endingLineNumber = "66">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -62,9 +56,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "37"
-            endingLineNumber = "37"
-            landmarkName = "ViewController"
-            landmarkType = "3">
+            endingLineNumber = "37">
             <Locations>
                <Location
                   shouldBeEnabled = "No"
@@ -155,9 +147,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "62"
-            endingLineNumber = "62"
-            landmarkName = "getRecords()"
-            landmarkType = "7">
+            endingLineNumber = "62">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -171,9 +161,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "90"
-            endingLineNumber = "90"
-            landmarkName = "setProperties()"
-            landmarkType = "7">
+            endingLineNumber = "90">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

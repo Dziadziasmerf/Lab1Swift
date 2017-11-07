@@ -14,7 +14,7 @@ class MasterTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //self.tableView.register(MasterTableViewCell.self, forCellReuseIdentifier: "cell")
+        timeout
     }
     
     public override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
