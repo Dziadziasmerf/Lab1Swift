@@ -8,31 +8,7 @@
 
 import UIKit
 
-struct Album {
-    var album : String
-    var artist : String
-    var genre : String
-    var tracks : Int
-    var year : Int
-    
-    init(album : String, artist: String, genre: String, tracks: Int, year : Int) {
-        self.album = album
-        self.artist = artist
-        self.genre = genre
-        self.tracks = tracks
-        self.year = year
-    }
-    
-    
-    init(dictionary: [String: Any]) {
-        self.album = dictionary["album"] as? String ?? ""
-        self.artist = dictionary["artist"] as? String ?? ""
-        self.genre = dictionary["genre"] as? String ?? ""
-        self.tracks = dictionary["tracks"] as? Int ?? 0
-        self.year = dictionary["year"] as? Int ?? 0
-    }
-}
-
+/*
 class ViewController: UIViewController {
     
     @IBOutlet var wykonawcaTF : UITextField?
@@ -46,8 +22,7 @@ class ViewController: UIViewController {
     @IBOutlet var nextButton : UIButton?
     @IBOutlet var recordLabel : UILabel?
     @IBOutlet var scrollView : UIScrollView?
-    var albums : [Album]?
-    var currentCounter : Int?
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -139,3 +114,5 @@ class ViewController: UIViewController {
         setProperties()
     }
 }
+     
+ */
