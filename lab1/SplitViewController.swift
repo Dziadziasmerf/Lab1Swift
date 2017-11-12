@@ -1,16 +1,5 @@
-//
-//  SplitViewController.swift
-//  lab1
-//
-//  Created by DziadziaS on 06/11/2017.
-//  Copyright © 2017 Użytkownik Gość. All rights reserved.
-//
-
 import Foundation
 import UIKit
-
-var albums : [Album]? = []
-var currentCounter : Int = 0
 
 struct Album {
     var album : String
@@ -18,6 +7,14 @@ struct Album {
     var genre : String
     var tracks : Int
     var year : Int
+    
+    init() {
+        self.album = ""
+        self.artist = ""
+        self.genre = ""
+        self.tracks = 0
+        self.year = 0
+    }
     
     init(album : String, artist: String, genre: String, tracks: Int, year : Int) {
         self.album = album
@@ -42,38 +39,12 @@ class SplitViewController : UISplitViewController, UISplitViewControllerDelegate
     
     override func viewDidLoad() {
         self.delegate = self
-        self.getRecords()
-    }
-    
-    func getRecords() {
-        guard let url = URL(string: "https://isebi.net/albums.php") else {return}
-        let session = URLSession.shared
-        session.dataTask(with: url) {  (data, response, error) in
-            if let jsonAlbums = data {
-                let jsonArray = try! JSONSerialization.jsonObject(with: jsonAlbums, options: JSONSerialization.ReadingOptions()) as? [Any]
-                albums = []
-                
-                for json in jsonArray! {
-                    if let dict = json as? [String: Any] { albums!.append(Album(dictionary: dict as [String : Any]))
-                    }
-                }
-                /*
-                if(albums!.count != 0) {
-                    DispatchQueue.main.async {
-                        currentCounter = 0;
-                        //self.setProperties()
-                    }
-                }
- */
-            }
-            }.resume()
         
     }
-    
     
     func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
         return true
     }
     
-    
+ 
 }
