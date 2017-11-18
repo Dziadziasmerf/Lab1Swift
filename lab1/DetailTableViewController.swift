@@ -2,6 +2,7 @@ import Foundation
 import UIKit
 
 protocol AlbumListUpdateDelegate: class {
+    func saveAlbumList()
     func updateAlbumList()
 }
 
@@ -22,6 +23,7 @@ class DetailTableViewController: UITableViewController {
             currentCounter = 0
             updateData()
             self.delegate?.updateAlbumList()
+            self.delegate?.saveAlbumList()
         }
     }
     
@@ -31,6 +33,7 @@ class DetailTableViewController: UITableViewController {
         }
         if let albumListDelegate = delegate {
             albumListDelegate.updateAlbumList()
+            albumListDelegate.saveAlbumList()
         }
     }
     
@@ -40,11 +43,15 @@ class DetailTableViewController: UITableViewController {
         }
         if let albumListDelegate = delegate {
             albumListDelegate.updateAlbumList()
+            albumListDelegate.saveAlbumList()
         }
     }
     @IBAction func genreTextFieldChanged(_ sender: UITextField) {
         if(currentCounter > 0) {
             albums![currentCounter - 1].genre = sender.text!
+            if let albumListDelegate = delegate {
+                albumListDelegate.saveAlbumList()
+            }
         }
     }
     @IBAction func yearTextFieldChanged(_ sender: UITextField) {
@@ -53,11 +60,16 @@ class DetailTableViewController: UITableViewController {
         }
         if let albumListDelegate = delegate {
             albumListDelegate.updateAlbumList()
+            albumListDelegate.saveAlbumList()
         }
     }
     @IBAction func songsCountTextFieldChanged(_ sender: UITextField) {
         if(currentCounter > 0 && Int(sender.text!) != nil) {
             albums![currentCounter - 1].tracks = Int(sender.text!)!
+            if let albumListDelegate = delegate {
+                albumListDelegate.updateAlbumList()
+                albumListDelegate.saveAlbumList()
+            }
         }
     }
     
@@ -66,6 +78,11 @@ class DetailTableViewController: UITableViewController {
             let splitViewController = self.navigationController?.parent as! SplitViewController
             let navViewController = splitViewController.viewControllers.first as! UINavigationController
             let masterViewController = navViewController.viewControllers.last as! MasterTableViewController
+
+            self.delegate = masterViewController
+        } else {
+            let nav = self.navigationController?.parent as! UINavigationController
+            let masterViewController = nav.viewControllers.first as! MasterTableViewController
 
             self.delegate = masterViewController
         }
@@ -86,7 +103,7 @@ class DetailTableViewController: UITableViewController {
             songsCount.text = ""
         } else if(currentCounter <= albums!.count) {
             let album : Album = albums![currentCounter-1]
-            self.title = "Rekord \(currentCounter) z \(albums!.count)"
+            self.title = "Edycja rekordu \(currentCounter) z \(albums!.count)"
             artist.text = album.artist
             albumTitle.text = album.album
             genre.text = album.genre

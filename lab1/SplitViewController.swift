@@ -32,6 +32,17 @@ struct Album {
         self.tracks = dictionary["tracks"] as? Int ?? 0
         self.year = dictionary["year"] as? Int ?? 0
     }
+    
+    func toDictionary() -> [String:Any] {
+        var dictionary: [String:Any] = [:]
+        dictionary["album"] = self.album
+        dictionary["artist"] = self.artist
+        dictionary["genre"] = self.genre
+        dictionary["tracks"] = self.tracks
+        dictionary["year"] = self.year
+        
+        return dictionary
+    }
 }
 
 

@@ -1,7 +1,6 @@
 import Foundation
 import UIKit
 
-
 var albums : [Album]?
 var currentCounter : Int = 0
 
@@ -10,7 +9,9 @@ class MasterTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.getRecords()
+        if(!self.getLocalAlbums()) {
+            self.getRecords()
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -24,6 +25,7 @@ class MasterTableViewController: UITableViewController {
             albums = [Album()]
         }
         currentCounter=albums!.count
+        saveAlbums()
         self.tableView.reloadData()
     }
     
@@ -38,9 +40,6 @@ class MasterTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! MasterTableViewCell;
-
-        print(indexPath.row)
-        print(albums!.count)
         
         cell.album.text = albums![indexPath.row].album
         cell.artist.text = albums![indexPath.row].artist
@@ -73,13 +72,47 @@ class MasterTableViewController: UITableViewController {
             }
             }.resume()
     }
+    
+    func getLocalAlbums() -> Bool {
+        
+        if let fileContent = NSArray.init(contentsOfFile: getAlbumFilePath()) {
+            let albumsFromFile = fileContent as! [[String: Any]]
+            albums = []
+            albumsFromFile.forEach({ (album) in
+                albums!.append(Album(dictionary: album))
+            })
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    func saveAlbums() {
+        let albumsToSave: [[String:Any]] = (albums?.map({ (album) -> [String:Any] in
+            return album.toDictionary()
+            }
+            ))!
+        
+        (albumsToSave as NSArray).write(toFile: getAlbumFilePath(),
+                                   atomically: true)
+    }
+    
+    func getAlbumFilePath() -> String {
+        let dirPaths =  NSSearchPathForDirectoriesInDomains  (.documentDirectory, .userDomainMask, true)
+        let docsDir = dirPaths.first
+        return docsDir! + "/" + "albums.txt"
+    }
 }
 
 extension MasterTableViewController: AlbumListUpdateDelegate {
+    func saveAlbumList() {
+        self.saveAlbums()
+        print("saved")
+    }
+    
     func updateAlbumList() {
         self.tableView.reloadData()
         print("reload")
     }
-    
     
 }
